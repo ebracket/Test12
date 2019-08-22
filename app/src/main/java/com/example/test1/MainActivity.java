@@ -4,29 +4,96 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestFutureTarget;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.test1.api.Config;
 import com.example.test1.dbstore.DbManager;
+import com.example.test1.entities.Student;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     EditText username, phone, email, password, pwd_confirm;
     Button button;
-
     SharedPreferences sharedpreferences;
-
     private DbManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView test = findViewById(R.id.test) ;
+
+        List<Student> students = new ArrayList<>() ;
+        students.add(new Student("02","Emmanuel",56)) ;
+        students.add(new Student("03","Felix",23)) ;
+        students.add(new Student("04","Andrew",30)) ;
+
+
+        StringBuilder stringBuilder = new StringBuilder() ;
+        for(Student student:students){
+            stringBuilder.append(student.getId()).append(" ").append(student.getName()).append(" ").append(student.getAge()).append("\n") ;
+        }
+        test.setText(stringBuilder.toString());
+
+
+
+        /*StringBuilder s = new StringBuilder() ;
+        for(int i=0;i<=50;i++){
+            s.append(i).append("\n") ;
+        }
+        test.setText(s.toString());*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*ImageView img = findViewById(R.id.image) ;
+        Glide.with(this)
+                .load("https://avatars3.githubusercontent.com/u/378279?s=400&v=4")
+                .addListener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(img) ;
+
 
         dbManager = new DbManager(this);
 
@@ -108,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                  }else{
                      Toast.makeText(MainActivity.this, "Password do not Match", Toast.LENGTH_LONG).show();
                  }
-*/
+
 
 
 
@@ -127,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        });
+        });*/
 
 
 
