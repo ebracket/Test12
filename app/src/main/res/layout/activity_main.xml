@@ -7,17 +7,22 @@
     tools:context=".MainActivity"
     android:layout_gravity="center_horizontal"
     android:padding="20dp"
+    android:background="@drawable/login_page_background"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Username: "
+        android:ems="12"
+        android:textColor="@android:color/white"
         android:padding="10dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHint="#fff"
+        android:ems="12"
         android:id="@+id/username"
         android:inputType="textPersonName"
         android:hint="@string/username"
@@ -41,8 +46,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email: "
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:text="Email: " />
 
     <EditText
         android:layout_width="match_parent"
