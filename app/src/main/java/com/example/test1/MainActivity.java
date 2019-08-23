@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -28,6 +31,10 @@ import com.example.test1.api.Config;
 import com.example.test1.dbstore.DbManager;
 import com.example.test1.entities.Student;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +42,61 @@ public class MainActivity extends AppCompatActivity {
     EditText username, phone, email, password, pwd_confirm;
     Button button;
     SharedPreferences sharedpreferences;
+    ImageView img ;
+    TextView name ;
     private DbManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        img = findViewById(R.id.image) ;
+        name = findViewById(R.id.json) ;
 
-        TextView test = findViewById(R.id.test) ;
+        AndroidNetworking.get("http://192.168.1.13/test12/data.php")
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            JSONObject user = response.getJSONObject(0);
+
+                            StringBuilder builder = new StringBuilder() ;
+                            for(int x=0;x<response.length();x++){
+                                JSONObject  obj = response.getJSONObject(x) ;
+                                builder.append(obj.getString("name")).append("\n") ;
+                            }
+
+                            name.setText(builder.toString());
+                            Log.d("response_data", response.toString());
+                            Glide.with(MainActivity.this)
+                                    .load(user.getString("imageUrl"))
+                                    .addListener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            return false;
+                                        }
+                                    })
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .into(img);
+
+                        }catch (JSONException e){
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d("response_error",anError.toString()) ;
+                    }
+                });
+
+        /*TextView test = findViewById(R.id.test) ;
 
         List<Student> students = new ArrayList<>() ;
         students.add(new Student("02","Emmanuel",56)) ;
@@ -77,22 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /*ImageView img = findViewById(R.id.image) ;
-        Glide.with(this)
-                .load("https://avatars3.githubusercontent.com/u/378279?s=400&v=4")
-                .addListener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(img) ;
 
 
         dbManager = new DbManager(this);
@@ -156,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                  }
 
 
-                 /*if(pa.equals(pdc)){
+                 if(pa.equals(pdc)){
                      SharedPreferences.Editor editor = sharedpreferences.edit();
                      editor.putString(Config.Username, u);
                      editor.putString(Config.Phone, ph);
@@ -194,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        });*/
+        });
 
 
 
