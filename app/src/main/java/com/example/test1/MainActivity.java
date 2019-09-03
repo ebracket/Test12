@@ -74,11 +74,14 @@ public class MainActivity extends AppCompatActivity {
                                     .addListener(new RequestListener<Drawable>() {
                                         @Override
                                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+
                                             return false;
+
                                         }
 
                                         @Override
                                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
                                             return false;
                                         }
                                     })
@@ -189,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                  long status=dbManager.insertData(dbManager.getWritableDatabase(),contentValues);
 
                  if(status>-1){
-                     Toast.makeText(MainActivity.this,"Data Upload Successful", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(MainActivity.this,"Data Upload Successful", Toast.LENGTH_LONG).show();
                  }else{
                      Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_LONG).show();
                  }
